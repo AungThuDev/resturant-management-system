@@ -76,7 +76,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
           <!-- Navbar links -->
-          <div class="navbar-nav align-items-center  ml-md-auto ">
+          <div class="navbar-nav align-items-center  ml-md-auto">
           </div>
           <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
             <li class="nav-item dropdown">
