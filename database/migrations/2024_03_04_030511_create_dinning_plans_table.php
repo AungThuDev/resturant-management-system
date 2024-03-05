@@ -16,7 +16,7 @@ class CreateDinningPlansTable extends Migration
         Schema::create('dinning_plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status');
+            $table->string('status')->default('available');
             $table->timestamps();
         });
     }
