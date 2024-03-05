@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\DinningPlan;
 use Illuminate\Http\Request;
 
 class TableController extends Controller
@@ -14,7 +14,9 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $tables = DinningPlan::all();
+
+        return view('tables.index', compact('tables'));
     }
 
     /**
@@ -24,7 +26,7 @@ class TableController extends Controller
      */
     public function create()
     {
-        //
+        return view('tables.create');
     }
 
     /**
@@ -35,7 +37,15 @@ class TableController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:dinning_plans,name'
+        ]);
+
+        DinningPlan::create([
+            'name' => $request->name
+        ]);
+
+        return redirect('/tables')->with('success', 'Table Created Successfully');
     }
 
     /**
@@ -55,9 +65,9 @@ class TableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(DinningPlan $table)
     {
-        //
+        return view('tables.edit', compact('table'));
     }
 
     /**
@@ -67,9 +77,17 @@ class TableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, DinningPlan $table)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:dinning_plans,name,'
+        ]);
+
+        $table->update([
+            'name' => $request->name
+        ]);
+
+        return redirect('/tables')->with('success', 'Updated Successfully');
     }
 
     /**
@@ -78,8 +96,10 @@ class TableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DinningPlan $table)
     {
-        //
+        $table->delete();
+
+        return redirect()->back()->with('success', 'Deleted Successfully');
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DinningPlanController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts.master');
 });
+
+Route::resource('/tables', TableController::class);
+Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan');
+Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here');
+Route::get('/ordered', [OrderController::class, 'order'])->name('ordered');
 
 Auth::routes();
 
