@@ -4,6 +4,7 @@
         <div class="sidenav-header  align-items-center">
             <a class="navbar-brand" href="javascript:void(0)">
                 <img src="{{ asset('assets/img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
+                <img src="{{ asset('assets/img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
             </a>
         </div>
         <div class="navbar-inner">
@@ -12,15 +13,40 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="examples/dashboard.html">
+                        <a class="nav-link @yield('dash-active')" href="examples/dashboard.html">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="examples/icons.html">
-                            <i class="ni ni-planet text-orange"></i>
-                            <span class="nav-link-text">Icons</span>
+                        <a class="nav-link @yield('kitchen-active')" href="{{ route('kitchens.index') }}">
+                            <i class="ni ni-shop text-success"></i>
+
+                            <span class="nav-link-text">Kitchen</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('cat-active')" href="{{ route('categories.index') }}">
+                            <i class="ni ni-planet  text-orange"></i>
+                            <span class="nav-link-text">Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('recipe-active')" href="{{ route('recipes.index') }}">
+                            <i class="ni ni-collection text-yellow"></i>
+                            <span class="nav-link-text">Recipe</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('user-active')" href="{{ route('users') }}">
+                            <i class="ni ni-single-02 text-purple"></i>
+                            <span class="nav-link-text">User</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('role-active')" href="{{ route('roles.index') }}">
+                            <i class="ni ni-single-02 text-pink"></i>
+                            <span class="nav-link-text">Role</span>
                         </a>
                     </li>
                 </ul>
