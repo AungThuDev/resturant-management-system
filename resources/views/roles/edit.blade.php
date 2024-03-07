@@ -1,22 +1,18 @@
 @extends('layouts.master')
-@section('header','Role Table')
-@section('role-active','active')
+@section('header', 'Role Table')
+@section('role-active', 'active')
 @section('content')
-    <form action="{{route('roles.update',$role->id)}}" method="POST">
+    <form action="{{ route('roles.update', $role->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
             <label for="name">Role's Name</label>
-            <input type="text" class="form-control" name="name" value="{{$role->name}}">
+            <input type="text" class="form-control" name="name" value="{{ $role->name }}">
             @error('name')
-                <span class="badge badge-danger">{{$message}}</span>
+                <span class="badge badge-danger">{{ $message }}</span>
             @enderror
         </div>
-<<<<<<< HEAD
-        <input type="submit" value="Update Role" class="btn btn-success" style="background-color: #204c2d!important;">
-=======
         <input type="submit" value="Update Role" class="btn btn-success">
->>>>>>> origin/main
-        <a href="{{route('roles.index')}}" class="btn btn-dark">Back</a>
+        <a href="{{ route('roles.index') }}" class="btn btn-dark">Back</a>
     </form>
 @endsection

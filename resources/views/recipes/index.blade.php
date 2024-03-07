@@ -1,13 +1,10 @@
 @extends('layouts.master')
-@section('header','Recipes Table')
-@section('recipe-active','active')
+@section('header', 'Recipes Table')
+@section('recipe-active', 'active')
 @section('content')
     <div>
-<<<<<<< HEAD
-        <a href="{{route('recipes.create')}}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;background-color: #204c2d!important;">Create Role</a>
-=======
-        <a href="{{route('recipes.create')}}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;">Create Role</a>
->>>>>>> origin/main
+        <a href="{{ route('recipes.create') }}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;">Create
+            Role</a>
     </div>
     <table class="table table-bordered table-striped" id="table">
         <thead>
@@ -30,54 +27,51 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url : "/recipes/",
-                error : function(xhr, textStatus, errorThrown) {
-                }
+                url: "/recipes/",
+                error: function(xhr, textStatus, errorThrown) {}
             },
-            "columns" : [
-                {
-                    "data" : "id",
+            "columns": [{
+                    "data": "id",
                 },
                 {
-                    "data" : "name",
+                    "data": "name",
                 },
                 {
-                    "data" : "price",
+                    "data": "price",
                 },
                 {
-                    "data" : "image",
+                    "data": "image",
                 },
                 {
-                    "data" : "category_id",
+                    "data": "category_id",
                 },
                 {
-                    "data" : "kitchen_id",
+                    "data": "kitchen_id",
                 },
                 {
-                    "data" : "action",
+                    "data": "action",
                 }
             ]
         });
-        $(document).on('click','.delete',function(e){
-        e.preventDefault();
-        var id = $(this).data('id');
-        Swal.fire({
-          title: 'Are you sure, you want to delete?',
-          showCancelButton: true,
-          confirmButtonText: 'Confirm',
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              url : '/recipes/' + id,
-              type : 'DELETE',
-              success : function(){
-                table.ajax.reload();
-              }
-            });
-          }
-        }
-      )
-      });
+        $(document).on('click', '.delete', function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure, you want to delete?',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/recipes/' + id,
+                        type: 'DELETE',
+                        success: function() {
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            })
+        });
     </script>
 @endsection
