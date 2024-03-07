@@ -112,8 +112,11 @@ hr
     height: 0;
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/main
 h1,
 h2,
 h3,
@@ -21399,9 +21402,13 @@ textarea[resize='horizontal']
 .navbar-vertical .navbar-brand > img
 {
     max-width: 100%;
+<<<<<<< HEAD
     max-height: 100px;
     border-radius: 50%;
     
+=======
+    max-height: 2rem;
+>>>>>>> origin/main
 }
 @media (min-width: 768px)
 {

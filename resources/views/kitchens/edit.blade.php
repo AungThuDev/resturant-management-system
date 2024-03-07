@@ -12,7 +12,11 @@
                 <span class="badge badge-danger">{{$message}}</span>
             @enderror
         </div>
+<<<<<<< HEAD
         <button class="btn btn-success" style="background-color: #204c2d!important;">Update Kitchen</button>
+=======
+        <button class="btn btn-success">Update Kitchen</button>
+>>>>>>> origin/main
         <a href="{{route('kitchens.index')}}" class="btn btn-dark">Back</a>
     </form>
 @endsection

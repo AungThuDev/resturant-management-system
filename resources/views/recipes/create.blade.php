@@ -51,7 +51,11 @@
     @error('image')
             <span class="badge badge-danger">{{$message}}</span><br><br>
     @enderror
+<<<<<<< HEAD
     <input type="submit" value="Create Recipe" class="btn btn-success" style="background-color: #204c2d!important;">
+=======
+    <input type="submit" value="Create Recipe" class="btn btn-success">
+>>>>>>> origin/main
     <a href="{{route('recipes.index')}}" class="btn btn-dark">Back</a>
 </form>
 @endsection
