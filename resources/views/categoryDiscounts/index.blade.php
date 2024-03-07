@@ -1,19 +1,16 @@
 @extends('layouts.master')
-@section('header','Kitchen Table')
-@section('kitchen-active','active')
+@section('header','CategoryDiscount Table')
+@section('catDis-active','active')
 @section('content')
     <div>
-<<<<<<< HEAD
-        <a href="{{route('kitchens.create')}}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;background-color: #204c2d!important;">Create Kitchen</a>
-=======
-        <a href="{{route('kitchens.create')}}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;">Create Kitchen</a>
->>>>>>> origin/main
+        <a href="{{route('categoryDiscounts.create')}}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;background-color: #204c2d!important;">Create CategoryDiscount</a>
     </div>
     <table class="table table-bordered table-striped" id="table">
         <thead>
             <tr>
                 <th>No.</th>
-                <th>Name</th>
+                <th>Discount Name</th>
+                <th>Discount %</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -27,7 +24,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url : "/kitchens/",
+                url : "/categoryDiscounts/",
                 error : function(xhr, textStatus, errorThrown) {
                 }
             },
@@ -37,6 +34,9 @@
                 },
                 {
                     "data" : "name",
+                },
+                {
+                    "data" : "percent"
                 },
                 {
                     "data" : "action",
@@ -54,7 +54,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
             $.ajax({
-              url : '/kitchens/' + id,
+              url : '/categoryDiscounts/' + id,
               type : 'DELETE',
               success : function(){
                 table.ajax.reload();
@@ -66,3 +66,4 @@
       });
     </script>
 @endsection
+

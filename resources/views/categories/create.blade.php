@@ -11,7 +11,11 @@
             <span class="badge badge-danger">{{$message}}</span>
         @enderror
     </div>
+<<<<<<< HEAD
+    <input type="submit" class="btn btn-success" value="Create Category" style="background-color: #204c2d!important;">
+=======
     <input type="submit" class="btn btn-success" value="Create Category">
+>>>>>>> origin/main
     <a href="{{route('categories.index')}}" class="btn btn-dark">Back</a>
 </form>
 @endsection

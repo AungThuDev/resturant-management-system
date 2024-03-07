@@ -3,10 +3,10 @@
         <!-- Brand -->
         <div class="sidenav-header  align-items-center">
             <a class="navbar-brand" href="javascript:void(0)">
-                <img src="{{ asset('assets/img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
+                <img src="{{ asset('assets/img/brand/logo.webp') }}" class="navbar-brand-img" alt="logo">
             </a>
         </div>
-        <div class="navbar-inner">
+        <div class="navbar-inner mt-5">
             <!-- Collapse -->
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
@@ -44,10 +44,23 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('role-active')" href="{{ route('roles.index') }}">
-                            <i class="ni ni-single-02 text-pink"></i>
+                            <i class="ni ni-settings text-brown"></i>
                             <span class="nav-link-text">Role</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('cus-active')" href="{{ route('customers.index') }}">
+                            <i class="ni ni-money-coins text-black"></i>
+                            <span class="nav-link-text">Customer Discount</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @yield('catDis-active')" href="{{ route('categoryDiscounts.index') }}">
+                            <i class="ni ni-money-coins text-red"></i>
+                            <span class="nav-link-text">Category Discount</span>
+                        </a>
+                    </li>
+
                 </ul>
                 <!-- Divider -->
                 <hr class="my-3">
