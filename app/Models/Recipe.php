@@ -18,4 +18,13 @@ class Recipe extends Model
     {
         return $this->belongsTo(Kitchen::class);
     }
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class);
+    }
+
+    public function order_details()
+    {
+        return $this->belongsToMany(OrderDetail::class);
+    }
 }

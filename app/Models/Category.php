@@ -14,4 +14,9 @@ class Category extends Model
     {
         return $this->hasMany(Recipe::class);
     }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'category_discount');
+    }
 }

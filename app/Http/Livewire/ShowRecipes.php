@@ -19,29 +19,41 @@ class ShowRecipes extends Component
 
     public $categories;
 
+    public $table;
+
+    public $tastes;
+
     public $filter = '';
+
+    public $taste = [];
 
     public function render()
     {
-        $query = Recipe::query();
+        $recipes = Recipe::latest()->paginate(10);
 
-        if($this->search)
+        if($this->filter && $this->search)
         {
-            $query->where('name', 'like', '%' . $this->search . '%');
-        }
-        if($this->filter)
-        {
-            // $query = Category::where('name', 'like', '%' . $this->filter . '%')->with('recipes')->get();
-            dd($this->filter);
-        }
-        $recipes = $query->latest()->paginate(10);
+            $query = Recipe::where('category_id', $this->filter);
 
-        return view('livewire.show-recipes', ['recipes' => $recipes, 'categories' => $this->categories]);
+            $recipes = $query->where('name', 'like', '%' . $this->search . '%')->paginate(10);
+        }
+        elseif($this->search)
+        {
+           $recipes = Recipe::where('name', 'like', '%' . $this->search . '%')->paginate(10);
+            
+        }
+        elseif($this->filter)
+        {   
+            $recipes = Recipe::where('category_id', $this->filter)->paginate(10);
+        }   
+
+        return view('livewire.show-recipes', ['recipes' => $recipes, 'categories' => $this->categories, 'table' => $this->table, 'tastes' => $this->tastes]);
     }
 
     public function addToCart(Recipe $recipe)
     {
-        $check = Cart::where('name', $recipe->name)->first();
+
+        $check = Cart::where('recipe_id', $recipe->id)->where('taste', $this->taste[$recipe->id])->first();
 
         if($check)
         {
@@ -52,11 +64,15 @@ class ShowRecipes extends Component
         }
         else
         {
-            Cart::create([
-                'name' => $recipe->name,
+            $cart = Cart::create([
+                'recipe_id' => $recipe->id,
                 'price' => $recipe->price,
-                'quantity' => 1
+                'quantity' => 1,
+                'dinning_plan_id' => $this->table->id,
+                'taste' => $this->taste[$recipe->id]
             ]);
+            
+            $cart->recipes()->sync($recipe->id);
         }
 
         $this->emit('itemAdded');

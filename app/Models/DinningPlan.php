@@ -10,4 +10,9 @@ class DinningPlan extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'status'];
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

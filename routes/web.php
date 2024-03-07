@@ -23,7 +23,9 @@ Route::get('/', function () {
 Route::resource('/tables', TableController::class);
 Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan');
 Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here');
-Route::get('/ordered', [OrderController::class, 'order'])->name('ordered');
+Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
+Route::get('/order-list', [OrderController::class, 'list'])->name('order.list');
+Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail');
 
 Auth::routes();
 
