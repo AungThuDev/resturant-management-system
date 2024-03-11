@@ -19,12 +19,14 @@
                     <td>{{ $detail->taste }}</td>
                     <td>{{ $detail->amount }}</td>
                     <td>{{ $detail->quantity }}</td>
+
+
                 </tr>
             @endforeach
         </tbody>
 
     </table>
-    <div class="col-4">
+    <div class="col-4 mt-5">
         <select wire:model="discount" class="form-control" id="">
             <option value="0">No Discounts</option>
             @foreach ($combined_discounts as $discount)
@@ -33,8 +35,16 @@
             @endforeach
         </select>
     </div>
-    <div class="d-flex justify-content-between mt-5">
-        <h3>Total - <span class="text-success" style="font-size: 25px">{{ $discounted_total }} MMK</span></h3>
-        <a href="" class="btn btn-primary float-right">Checkout</a>
+    <div class="mt-2">
+        <div class="float-right">
+            <h3>Total - <span class="text-success " style="font-size: 25px">{{ $discounted_total }}
+                    MMK <span class="text-danger" style="font-size: 15px">(including tax 10%)</span></span></h3>
+            <form action="{{ route('checkout', $order->id) }}" method="POST">
+                @csrf
+                <button class="btn btn-sm btn-dark">Checkout</button>
+            </form>
+
+        </div>
     </div>
+
 </div>

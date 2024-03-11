@@ -1,6 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
+    <div>
+        <a href="{{ route('plan') }}" class="btn btn-dark float-right mt-3 mb-3">Dinning Plans</a>
+
+    </div>
     <table class="table table-hover">
         <thead>
             <tr>

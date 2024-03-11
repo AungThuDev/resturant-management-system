@@ -21,7 +21,6 @@ class CreateOrderDetailsTable extends Migration
             $table->string('taste');
             $table->integer('amount');
             $table->integer('quantity');
-            $table->date('order_date');
             $table->timestamps();
         });
     }

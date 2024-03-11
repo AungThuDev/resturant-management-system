@@ -10,6 +10,7 @@ use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Recipe;
+use App\Models\SaleRecord;
 use App\Models\Taste;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -43,10 +44,11 @@ class OrderController extends Controller
             $total += $item->price;  
         }
 
-        $check_order = Order::where('dinning_plan', $table->name)->first();
+        $check_order = Order::where('dinning_plan', $table->name)->where('status', 'ordered')->first();
 
-        if($check_order)
+        if($check_order && $check_order->status == 'ordered')
         {
+
             if(request()->discount_name)
             {
                 $search_discount = Discount::where('name', request()->discount_name)->first();
@@ -86,6 +88,7 @@ class OrderController extends Controller
         }
         else
         {
+
             $search_discount = Discount::where('name', request()->discount_name)->first();
 
             if($search_discount)
@@ -95,7 +98,8 @@ class OrderController extends Controller
                     'dinning_plan' => $table->name,
                     'discount_id' => $search_discount->id,
                     'customer_discount_id' => null,
-                    'status' => 'ordered'
+                    'status' => 'ordered',
+                    'order_date' => Carbon::now()
                 ]);
 
                 $order_id = $order->id;
@@ -110,7 +114,8 @@ class OrderController extends Controller
                     'dinning_plan' => $table->name,
                     'discount_id' => null,
                     'customer_discount_id' => $search_customer_discount->id,
-                    'status' => 'ordered'
+                    'status' => 'ordered',
+                    'order_date' => Carbon::now()
                 ]);
 
                 $order_id = $order->id;
@@ -121,7 +126,8 @@ class OrderController extends Controller
                 $order = Order::create([
                     'total_amount' => $total,
                     'dinning_plan' => $table->name,
-                    'status' => 'ordered'
+                    'status' => 'ordered',
+                    'order_date' => Carbon::now()
                 ]);
 
                 $order_id = $order->id;
@@ -152,7 +158,6 @@ class OrderController extends Controller
                     'taste' => $item->taste,
                     'amount' => $item->price,
                     'quantity' => $item->quantity,
-                    'order_date' => Carbon::now()
                 ]);
     
                 $order_detail->recipes()->sync($item->recipe_id);
@@ -181,13 +186,17 @@ class OrderController extends Controller
     {
         $details = $order->order_details()->with('recipes')->get();
 
+        if($order->status == 'paid')
+        {
+            return redirect('/dinning-plans');
+        }   
         $discount_name = '';
 
         $total = 0;
 
         foreach($details as $detail)
         {
-            $total += $detail->amount;
+            $total += $detail->amount;            
         }
 
         $discount = Discount::where('id', $order->discount_id)->first();
@@ -206,5 +215,57 @@ class OrderController extends Controller
 
         
         return view('orders.order-details', compact('details', 'total', 'discount_name', 'order'));
+
+
+    }
+
+    public function checkout(Order $order)
+    {
+        if($order->status == 'ordered')
+        {
+            $total = $order->total_amount + ($order->total_amount * 0.1);
+
+            $discount_amount = 0;
+            
+            $discount_search = Discount::where('id', $order->discount_id)->with('categories')->first();
+            if($discount_search)
+            {
+                $discount_amount = $total - ($total * ($discount_search->percent / 100));
+            } 
+    
+            $customer_discount_search = CustomerDiscount::where('id', $order->customer_discount_id)->value('percent');
+            if($customer_discount_search)
+            {
+                $discount_amount = $total - ($total * ($customer_discount_search / 100));
+            } 
+            if(!$discount_search && !$customer_discount_search)
+            {
+                $discount_amount = $total;
+            }
+    
+            $record = SaleRecord::create([
+                'order_id' => $order->id,
+                'amount' => $total,
+                'discounted_amount' => $discount_amount,
+                'order_date' => $order->order_date
+            ]);
+    
+            $order->update([
+                'status' => 'paid'
+            ]);
+
+            $table = DinningPlan::where('name', $order->dinning_plan)->first();
+
+            $table->update([
+                'status' => 'available'
+            ]);
+    
+            return redirect()->route('print.receipt', $record->id);
+        }
+        else
+        {
+            return redirect('/dinning-plans')->with('error', "Error");
+        }
+
     }
 }

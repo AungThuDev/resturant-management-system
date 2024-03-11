@@ -4,7 +4,7 @@
 @section('content')
     <div>
         <a href="{{ route('recipes.create') }}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;">Create
-            Role</a>
+            Recipe</a>
     </div>
     <table class="table table-bordered table-striped" id="table">
         <thead>

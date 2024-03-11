@@ -50,10 +50,10 @@ class ShowRecipes extends Component
         return view('livewire.show-recipes', ['recipes' => $recipes, 'categories' => $this->categories, 'table' => $this->table, 'tastes' => $this->tastes]);
     }
 
-    public function addToCart(Recipe $recipe)
+    public function addToCart(Recipe $recipe, $id)
     {
 
-        $check = Cart::where('recipe_id', $recipe->id)->where('taste', $this->taste[$recipe->id])->first();
+        $check = Cart::where('recipe_id', $recipe->id)->where('dinning_plan_id', $id)->where('taste', $this->taste[$recipe->id])->first();
 
         if($check)
         {

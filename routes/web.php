@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DinningPlanController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SalesRecordsController;
 use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,7 @@ Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('orde
 Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
 Route::get('/order-list', [OrderController::class, 'list'])->name('order.list');
 Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail');
+Route::post('/orders/{order}/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 Auth::routes();
 
@@ -50,3 +52,7 @@ Route::post('/permissions/{id}',[App\Http\Controllers\PermissionController::clas
 
 Route::resource('/customers',App\Http\Controllers\CustomerDiscountController::class);
 Route::resource('/categoryDiscounts',App\Http\Controllers\CategoryDiscountController::class);
+
+Route::get('/sales-records', [SalesRecordsController::class, 'index'])->name('sales-records.index');
+Route::get('/sales-records/{salerecord}/details', [SalesRecordsController::class, 'details'])->name('sales-records.show');
+Route::get('/receipt/{receipt}', [SalesRecordsController::class, 'print'])->name('print.receipt');

@@ -15,22 +15,6 @@ class DiscountSeeder extends Seeder
      */
     public function run()
     {
-
-        Discount::create([
-            'name' => 'Discount 20%',
-            'percent'=> 20
-        ]);
-
-
-        Discount::create([
-            'name' => 'Discount 15%',
-            'percent'=> 15
-        ]);
-
-        Discount::create([
-            'name' => 'Discount 10%',
-            'percent'=> 10
-        ]);
         
         CustomerDiscount::create([
             'name' => 'MST student',

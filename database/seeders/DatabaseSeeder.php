@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TasteSeeder::class,
             AdminSeeder::class,
-            RecipeSeeder::class,
             TableSeeder::class,
             DiscountSeeder::class,
+            CategorySeeder::class,
+            KitchenSeeder::class
         ]);
     }
 }
