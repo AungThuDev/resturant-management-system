@@ -28,7 +28,7 @@ class PermissionController extends Controller
     }
     
 
-    public function updateAssign(Request $request, $userId)
+    public function updateAssign(Request $request,$id)
     {
         // Validate the incoming request data
         $request->validate([
@@ -38,7 +38,7 @@ class PermissionController extends Controller
         ]);
 
         // Retrieve the user
-        $user = User::findOrFail($userId);
+        $user = User::where('id',$id)->where('name',$request->name)->first();
 
         // Retrieve the selected role
         $role = Role::findOrFail($request->role);
