@@ -1,5 +1,5 @@
 @extends('layouts.master')
-
+@section('dinning-active', 'active')
 @section('content')
     <h1 class="text-center">Seating Plans</h1>
     <div class="row">

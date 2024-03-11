@@ -1,11 +1,12 @@
 @extends('layouts.master')
-
+@section('header', 'Current Orders')
+@section('order-active', 'active')
 @section('content')
     <div>
         <a href="{{ route('plan') }}" class="btn btn-dark float-right mt-3 mb-3">Dinning Plans</a>
 
     </div>
-    <table class="table table-hover">
+    <table class="table table-bordered table-striped" id="table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -16,21 +17,35 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($orders as $order)
-                <tr>
-                    <td>
-                        {{ $order->id }}
-                    </td>
-                    <td>{{ $order->dinning_plan }}</td>
-                    <td>{{ $order->total_amount }}</td>
-                    <td>
-                        {{ $order->created_at->format('jS M h:i a') }}
-                    </td>
-                    <td>
-                        <a href="{{ route('order.detail', $order->id) }}" class="btn btn-sm btn-primary">Details</a>
-                    </td>
-                </tr>
-            @endforeach
+
         </tbody>
     </table>
+@endsection
+@section('script')
+    <script>
+        var table = $('#table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/order-list/",
+                error: function(xhr, textStatus, errorThrown) {}
+            },
+            "columns": [{
+                    "data": "id",
+                },
+                {
+                    "data": "dinning_plan",
+                },
+                {
+                    "data": "total_amount",
+                },
+                {
+                    "data": "order_date",
+                },
+                {
+                    "data": "action",
+                }
+            ]
+        });
+    </script>
 @endsection

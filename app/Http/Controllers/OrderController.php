@@ -15,6 +15,7 @@ use App\Models\Taste;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 use function Ramsey\Uuid\v1;
 
@@ -174,12 +175,21 @@ class OrderController extends Controller
         return redirect('/order-list');
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $orders = Order::where('status', 'ordered')->orderBy('id', 'desc')->paginate(5);
+        if($request->ajax()){
+            $orders = Order::where('status', 'ordered')->orderBy('id', 'desc')->get();
+            return DataTables::of($orders)
+            ->addColumn('action',function($each){
+                $detail_icon = '<a href="'.route('order.detail',$each->id).'" class="btn btn-outline-primary" style="margin-right:10px;"><i class="fas fa-eye"></i>&nbsp;Details</a>';
 
-
-        return view('orders.order-list', compact('orders'));
+                return '<div class="action-icon">' . $detail_icon . '</div>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        
+        return view('orders.order-list');
     }
 
     public function detail(Order $order)

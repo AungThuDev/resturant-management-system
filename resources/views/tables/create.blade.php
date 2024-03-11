@@ -1,5 +1,5 @@
 @extends('layouts.master')
-
+@section('table-active', 'active')
 @section('content')
     <div class="col-7">
         <form action="{{ route('tables.store') }}" method="POST">

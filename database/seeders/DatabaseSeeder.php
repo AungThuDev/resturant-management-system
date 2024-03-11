@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             TableSeeder::class,
             DiscountSeeder::class,
             CategorySeeder::class,
-            KitchenSeeder::class
+            KitchenSeeder::class,
+            RecordSeeder::class
         ]);
     }
 }

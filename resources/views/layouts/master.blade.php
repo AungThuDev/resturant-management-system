@@ -40,7 +40,7 @@
         <nav class="navbar navbar-top navbar-expand navbar-dark border-bottom" style="background: #204c2d!important;">
             <div class="container-fluid">
                 <h1 style="color: #fff;font-size:20px;" class="mx-3">@yield('header')</h1>
-                
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                     <!-- Navbar links -->
@@ -48,13 +48,14 @@
                     </div>
                     <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
                         <li class="nav-item dropdown">
-                            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                                 <div class="media align-items-center">
                                     <span class="avatar avatar-sm rounded-circle">
-                                        <img alt="Image placeholder" src="{{asset('assets/img/theme/avator.jpeg')}}">
+                                        <img alt="Image placeholder" src="{{ asset('assets/img/theme/avator.jpeg') }}">
                                     </span>
                                     <div class="media-body  ml-2  d-none d-lg-block">
-                                        <span class="mb-0 text-sm  font-weight-bold">{{auth()->user()->name}}</span>
+                                        <span class="mb-0 text-sm  font-weight-bold">{{ auth()->user()->name }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -64,12 +65,13 @@
                                 </div>
 
                                 <div class="dropdown-divider"></div>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="dropdown-item">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    class="dropdown-item">
                                     @csrf
                                     <i class="ni ni-user-run"></i>
                                     <button class="btn btn-outline-success">logout</button>
                                 </form>
-                                <!-- <a href="{{route('logout')}}" class="dropdown-item">
+                                <!-- <a href="{{ route('logout') }}" class="dropdown-item">
                                     <i class="ni ni-user-run"></i>
                                     <span>Logout</span>
                                 </a> -->
@@ -132,18 +134,18 @@
             }
         })
 
-        @if(session('create'))
-        Toast.fire({
-            icon: 'success',
-            title: "{{session('create')}}"
-        })
+        @if (session('create'))
+            Toast.fire({
+                icon: 'success',
+                title: "{{ session('create') }}"
+            })
         @endif
 
-        @if(session('update'))
-        Toast.fire({
-            icon: 'success',
-            title: "{{session('update')}}"
-        })
+        @if (session('update'))
+            Toast.fire({
+                icon: 'success',
+                title: "{{ session('update') }}"
+            })
         @endif
     </script>
     @yield('script')

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('header', 'Sales Record Details')
-@section('role-active', 'active')
+@section('record-active', 'active')
 @section('content')
     <table class="table table-bordered table-striped">
         <thead>

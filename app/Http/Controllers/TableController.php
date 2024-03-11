@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DinningPlan;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class TableController extends Controller
 {
@@ -12,11 +13,22 @@ class TableController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tables = DinningPlan::all();
+        if($request->ajax()){
+            $recipe = DinningPlan::query();
+            return DataTables::of($recipe)
+            ->addColumn('action',function($each){
+                $edit_icon = '<a href="'.route('tables.edit',$each->id).'" class="btn btn-outline-warning" style="margin-right:10px;"><i class="fas fa-user-edit"></i>&nbsp;Edit</a>';
+                $delete_icon = '<a href="" class="btn btn-outline-danger delete" data-id = "'.$each->id.'"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>';
 
-        return view('tables.index', compact('tables'));
+                return '<div class="action-icon">' . $edit_icon . $delete_icon . '</div>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+        
+        return view('tables.index');
     }
 
     /**
@@ -45,7 +57,7 @@ class TableController extends Controller
             'name' => $request->name
         ]);
 
-        return redirect('/tables')->with('success', 'Table Created Successfully');
+        return redirect('/tables')->with('create', 'Table Created Successfully');
     }
 
     /**
@@ -87,7 +99,7 @@ class TableController extends Controller
             'name' => $request->name
         ]);
 
-        return redirect('/tables')->with('success', 'Updated Successfully');
+        return redirect('/tables')->with('update', 'Updated Successfully');
     }
 
     /**
@@ -99,7 +111,6 @@ class TableController extends Controller
     public function destroy(DinningPlan $table)
     {
         $table->delete();
-
-        return redirect()->back()->with('success', 'Deleted Successfully');
+        return 'success';
     }
 }
