@@ -25,6 +25,32 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('user-management', function ($user) {
+            // Logic to check if user has user management permission
+            // foreach($user->roles as $role){
+            //     foreach($role->permissions as $p){
+            //         if($p->name !== "user-management")
+            //         {
+            //             dd($user->hasPermissionTo('user-management'));
+            //             return $user->hasPermissionTo('user-management');
+            //         }else{
+            //             return redirect('/dashboard');      
+            //         }
+            //     }
+            // }
+            foreach(auth()->user()->roles as $r)
+            {
+                foreach($r->permissions as $p)
+                {
+                    if($p->name != "user-management")
+                    {
+                        return redirect('/dashboard');
+                    }else{
+                        return redirect('/users');
+                    }
+                }
+            }
+            
+        });
     }
 }

@@ -11,12 +11,16 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <ul class="navbar-nav">
+                    
                     <li class="nav-item">
-                        <a class="nav-link @yield('dash-active')" href="examples/dashboard.html">
+                        <a class="nav-link @yield('dash-active')" href="{{url('/dashboard')}}">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
+                    @foreach(auth()->user()->roles as $role)
+                    @foreach($role->permissions as $p)
+                    @if($p->name == 'menu-management')
                     <li class="nav-item">
                         <a class="nav-link @yield('kitchen-active')" href="{{ route('kitchens.index') }}">
                             <i class="ni ni-shop text-success"></i>
@@ -24,6 +28,7 @@
                             <span class="nav-link-text">Kitchen</span>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link @yield('cat-active')" href="{{ route('categories.index') }}">
                             <i class="ni ni-planet  text-orange"></i>
@@ -36,12 +41,24 @@
                             <span class="nav-link-text">Recipe</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    @endif
+                    @endforeach
+                    @endforeach
+
+                    @foreach(auth()->user()->roles as $role)
+                        @foreach($role->permissions as $p)
+                        @if($p->name == 'user-management')
+                        <li class="nav-item">
                         <a class="nav-link @yield('user-active')" href="{{ route('users') }}">
                             <i class="ni ni-single-02 text-purple"></i>
                             <span class="nav-link-text">User</span>
                         </a>
                     </li>
+                        @endif
+                        @endforeach
+                    @endforeach
+                    
+                    
                     <li class="nav-item">
                         <a class="nav-link @yield('role-active')" href="{{ route('roles.index') }}">
                             <i class="ni ni-settings text-brown"></i>

@@ -3,7 +3,7 @@
 @section('user-active', 'active')
 @section('content')
     <div>
-        <a href="{{ route('register') }}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;">Create User</a>
+        <a href="{{ route('users.create') }}" class="btn btn-dark mb-3" style="float: right;margin-right:25px;">Create User</a>
     </div>
     <table class="table table-bordered table-striped" id="table">
         <thead>

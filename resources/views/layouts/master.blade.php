@@ -54,7 +54,7 @@
                                         <img alt="Image placeholder" src="{{asset('assets/img/theme/avator.jpeg')}}">
                                     </span>
                                     <div class="media-body  ml-2  d-none d-lg-block">
-                                        <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+                                        <span class="mb-0 text-sm  font-weight-bold">{{auth()->user()->name}}</span>
                                     </div>
                                 </div>
                             </a>
@@ -64,10 +64,15 @@
                                 </div>
 
                                 <div class="dropdown-divider"></div>
-                                <a href="#!" class="dropdown-item">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="dropdown-item">
+                                    @csrf
+                                    <i class="ni ni-user-run"></i>
+                                    <button class="btn btn-outline-success">logout</button>
+                                </form>
+                                <!-- <a href="{{route('logout')}}" class="dropdown-item">
                                     <i class="ni ni-user-run"></i>
                                     <span>Logout</span>
-                                </a>
+                                </a> -->
                             </div>
                         </li>
                     </ul>

@@ -18,10 +18,7 @@ class UserController extends Controller
         {
             $user = User::with('roles')->get();
             return DataTables::of($user)
-           
-            ->addColumn('action',function($each){
-                
-                
+            ->addColumn('action',function($each){ 
                 if($each->roles->isNotEmpty()){
                     $edit_icon = '<a href="'.route('users.edit',$each->id).'" class="btn btn-outline-warning" style="margin-right:10px;"><i class="fas fa-user-edit"></i>&nbsp;Edit</a>';
                     $role = '<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal' . $each->id . '"><i class="fas fa-eye"></i>&nbsp;Role&Permission</button>
@@ -67,6 +64,8 @@ class UserController extends Controller
                 
                 $delete_icon = '<a href="" class="btn btn-outline-danger delete" data-id = "'.$each->id.'"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>';
 
+            
+           
                 return '<div class="action-icon">' . $role .$assign. $edit_icon . $delete_icon . '</div>';
             })
             ->rawColumns(['action'])
