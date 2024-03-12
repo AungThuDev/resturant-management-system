@@ -15,6 +15,8 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('logo');
+            $table->string('hex_code');
             $table->integer('tax');
             $table->timestamps();
         });
