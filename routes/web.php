@@ -21,22 +21,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
-
-
-
     
-    Route::resource('/tables', TableController::class)->middleware('order-management');
-    Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan')->middleware('order-management');
-    Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here')->middleware('order-management');
-    Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
-    Route::get('/order-list', [OrderController::class, 'list'])->name('order.list');
-    Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail');
-    Route::post('/orders/{order}/checkout', [OrderController::class, 'checkout'])->name('checkout');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('/tables', TableController::class)->middleware('order-management');
+Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan')->middleware('order-management');
+Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here')->middleware('order-management');
+Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
+Route::get('/order-list', [OrderController::class, 'list'])->name('order.list');
+Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail');
+Route::post('/orders/{order}/checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::resource('/kitchens',App\Http\Controllers\KitchenController::class)->middleware('menu-management');
-    Route::resource('/categories',App\Http\Controllers\CategoryController::class)->middleware('menu-management');
-    Route::resource('/recipes',App\Http\Controllers\RecipeController::class)->middleware('menu-management');
+Route::resource('/kitchens',App\Http\Controllers\KitchenController::class)->middleware('menu-management');
+Route::resource('/categories',App\Http\Controllers\CategoryController::class)->middleware('menu-management');
+Route::resource('/recipes',App\Http\Controllers\RecipeController::class)->middleware('menu-management');
 
 Route::resource('/roles',App\Http\Controllers\RoleController::class)->middleware('user-management');
 Route::get('/roles/{id}/assign',[App\Http\Controllers\RoleController::class,'assignForm'])->name('roles.assign');
@@ -57,11 +54,11 @@ Route::delete('/users/{id}',[App\Http\Controllers\UserController::class,'delete'
 Route::resource('/customers',App\Http\Controllers\CustomerDiscountController::class)->middleware('discount-management');
 Route::resource('/categoryDiscounts',App\Http\Controllers\CategoryDiscountController::class)->middleware('discount-management');
 
-    Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function(){
     Route::get('/dashboard',function(){
         return view('dashboard.index');
     });
-Route::get('/sales-records', [SalesRecordsController::class, 'index'])->name('sales-records.index')->middleware('reporting');
+    Route::get('/sales-records', [SalesRecordsController::class, 'index'])->name('sales-records.index')->middleware('reporting');
     Route::get('/sales-records/{salerecord}/details', [SalesRecordsController::class, 'details'])->name('sales-records.show')->middleware('reporting');
     Route::get('/receipt/{receipt}', [SalesRecordsController::class, 'print'])->name('print.receipt')->name('reporting');
     Route::get('/settings', [SettingController::class, 'index']);
