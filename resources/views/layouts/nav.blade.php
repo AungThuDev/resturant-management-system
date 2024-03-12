@@ -11,31 +11,50 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <ul class="navbar-nav">
+                    @foreach (auth()->user()->roles as $role)
+                        @foreach ($role->permissions as $p)
+                            @if ($p->name == 'reporting')
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('dash-active')" href="{{ url('/dashboard') }}">
+                                        <i class="ni ni-tv-2 text-primary"></i>
+                                        <span class="nav-link-text">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('record-active')" href="{{ url('/sales-records') }}">
+                                        <i class="fa-regular fa-clipboard text-info"></i>
+                                        <span class="nav-link-text">Sales Records</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endforeach
 
-                    <li class="nav-item">
-                        <a class="nav-link @yield('dash-active')" href="{{ url('/dashboard') }}">
-                            <i class="ni ni-tv-2 text-primary"></i>
-                            <span class="nav-link-text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('dinning-active')" href="{{ url('/dinning-plans') }}">
-                            <i class="fa fa-utensils text-success"></i>
-                            <span class="nav-link-text">Order Here</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('order-active')" href="{{ url('/order-list') }}">
-                            <i class="fa-solid fa-list text-danger"></i>
-                            <span class="nav-link-text">Current Orders</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('record-active')" href="{{ url('/sales-records') }}">
-                            <i class="fa-regular fa-clipboard text-info"></i>
-                            <span class="nav-link-text">Sales Records</span>
-                        </a>
-                    </li>
+                    @foreach (auth()->user()->roles as $role)
+                        @foreach ($role->permissions as $p)
+                            @if ($p->name == 'order-management')
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('dinning-active')" href="{{ url('/dinning-plans') }}">
+                                        <i class="fa fa-utensils text-success"></i>
+                                        <span class="nav-link-text">Order Here</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('order-active')" href="{{ url('/order-list') }}">
+                                        <i class="fa-solid fa-list text-danger"></i>
+                                        <span class="nav-link-text">Current Orders</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('table-active')" href="{{ route('tables.index') }}">
+                                        <i class="fa-solid fa-bowl-food"></i>
+                                        <span class="nav-link-text">Tables</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endforeach
+
                     @foreach (auth()->user()->roles as $role)
                         @foreach ($role->permissions as $p)
                             @if ($p->name == 'menu-management')
@@ -72,42 +91,43 @@
                                         <span class="nav-link-text">User</span>
                                     </a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('role-active')" href="{{ route('roles.index') }}">
+                                        <i class="ni ni-settings text-brown"></i>
+                                        <span class="nav-link-text">Role</span>
+                                    </a>
+                                </li>
                             @endif
                         @endforeach
                     @endforeach
 
-
-                    <li class="nav-item">
-                        <a class="nav-link @yield('role-active')" href="{{ route('roles.index') }}">
-                            <i class="ni ni-settings text-brown"></i>
-                            <span class="nav-link-text">Role</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('table-active')" href="{{ route('tables.index') }}">
-                            <i class="fa-solid fa-bowl-food"></i>
-                            <span class="nav-link-text">Tables</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('cus-active')" href="{{ route('customers.index') }}">
-                            <i class="ni ni-money-coins text-black"></i>
-                            <span class="nav-link-text">Customer Discount</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('catDis-active')" href="{{ route('categoryDiscounts.index') }}">
-                            <i class="ni ni-money-coins text-red"></i>
-                            <span class="nav-link-text">Category Discount</span>
-                        </a>
-                    </li>
+                    @foreach (auth()->user()->roles as $role)
+                        @foreach ($role->permissions as $p)
+                            @if ($p->name == 'discount-management')
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('cus-active')" href="{{ route('customers.index') }}">
+                                        <i class="ni ni-money-coins text-black"></i>
+                                        <span class="nav-link-text">Customer Discount</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @yield('catDis-active')"
+                                        href="{{ route('categoryDiscounts.index') }}">
+                                        <i class="ni ni-money-coins text-red"></i>
+                                        <span class="nav-link-text">Category Discount</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endforeach
 
                 </ul>
                 <!-- Divider -->
                 <hr class="my-3">
                 <!-- Heading -->
                 <h6 class="navbar-heading p-0 text-muted">
-                    <span>Products</span>
+                    <span>General Settings</span>
                 </h6>
                 <!-- Navigation -->
                 <ul class="navbar-nav mb-md-3">

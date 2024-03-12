@@ -31,7 +31,7 @@ class AdminSeeder extends Seeder
          $admin->roles()->sync([$role->id => ['model_type' => 'App\\Models\\User']]);
 
 
-         $permissions = ['user-management', 'menu-management', 'table-management', 'reporting', 'setting', 'discount-management'];
+         $permissions = ['user-management', 'menu-management', 'order-management', 'reporting', 'setting', 'discount-management'];
          $permission = [];
          foreach ($permissions as $p) {
              array_push($permission, Permission::create(['name' => $p]));

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Yajra\DataTables\DataTables;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -20,13 +21,58 @@ class RoleController extends Controller
         {
             $role = Role::query();
             return DataTables::of($role)
+            ->addColumn('permission',function($each){
+                $permission = '';
+                if ($each->permissions->isNotEmpty()) {
+                    $permission = '<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal' . $each->id . '"><i class="fas fa-eye"></i>&nbsp;ViewPermission</button>
+                    <!-- Modal -->
+                <div class="modal fade" id="exampleModal' . $each->id . '" tabindex="-1" aria-labelledby="exampleModalLabel' . $each->id . '" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Role Name = </h5><br>
+                                <h5 class="modal-title" id="exampleModalLabel' . $each->id . '">'.$each->name.'</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5>Permissions</h5><br>
+                                <ul>';
+                                foreach($each->permissions as $p){
+                                    $permission .= '<li>' . $p->name . '</li>';
+                                }
+                                $permission .= '</ul><br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>'; 
+                } else {
+                    $permission .= '<span>No Permissions Found</span>';
+                }
+                
+                return '<div class="action-icon">' . $permission .  '</div>';
+
+                
+            })
             ->addColumn('action',function($each){
-                $edit_icon = '<a href="'.route('roles.edit',$each->id).'" class="btn btn-outline-warning" style="margin-right:10px;"><i class="fas fa-user-edit"></i>&nbsp;Edit</a>';
+                if($each->permissions->isNotEmpty()){
+                    $update = '<a href="'.route('roles.editAssign',$each->id).'" class="btn btn-outline-dark" style="margin-right:10px;"><i class="fas fa-edit"></i>&nbsp;UpdatePermission</a>';
+                    $assign = '';
+                }else{
+                    $assign = '<a href="'.route('roles.assign',$each->id).'" class="btn btn-outline-primary" style="margin-right:10px;"><i class="fas fa-edit"></i>&nbsp;AssignPermission</a>';
+                    $update = '';
+                }
+                
+                
                 $delete_icon = '<a href="" class="btn btn-outline-danger delete" data-id = "'.$each->id.'"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>';
 
-                return '<div class="action-icon">' . $edit_icon . $delete_icon . '</div>';
+                return '<div class="action-icon">' . $assign . $update . $delete_icon . '</div>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['permission','action'])
             ->make(true);
         }
         return view('roles.index');
@@ -115,5 +161,18 @@ class RoleController extends Controller
         $role->delete();
 
         return 'success';
+    }
+
+    public function assignForm($id)
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        return view('roles.assign',compact('role','permissions'));
+    }
+    public function editAssign($id)
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        return view('roles.editPermission',compact('role','permissions'));
     }
 }

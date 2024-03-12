@@ -2,8 +2,12 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\Authorize;
 use App\Http\Middleware\Menu;
+use App\Http\Middleware\Order;
+use App\Http\Middleware\Setting;
+use App\Http\Middleware\Discount;
+use App\Http\Middleware\Authorize;
+use App\Http\Middleware\Reporting;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,5 +71,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user-management' => Authorize::class,
         'menu-management' => Menu::class,
+        'order-management' => Order::class,
+        'setting' => Setting::class,
+        'discount-management' => Discount::class,
+        'reporting' => Reporting::class,
     ];
 }

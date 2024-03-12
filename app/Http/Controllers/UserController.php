@@ -18,6 +18,14 @@ class UserController extends Controller
         {
             $user = User::with('roles')->get();
             return DataTables::of($user)
+            ->addColumn('role',function($each){
+                $r = '';
+                foreach($each->roles as $role){
+                    $r = $role->name;
+                }
+                return $r;
+                
+            })
             ->addColumn('action',function($each){ 
                 if($each->roles->isNotEmpty()){
                     $edit_icon = '<a href="'.route('users.edit',$each->id).'" class="btn btn-outline-warning" style="margin-right:10px;"><i class="fas fa-user-edit"></i>&nbsp;Edit</a>';
@@ -56,7 +64,7 @@ class UserController extends Controller
             </div>';
                     $assign = '';
                 }else{
-                    $assign = '<a href="'.route('users.assign',$each->id).'" class="btn btn-outline-success" style="margin-right:10px;"><i class="fas fa-user-edit"></i>&nbsp;AssignPermission</a>';
+                    $assign = '<a href="'.route('users.assign',$each->id).'" class="btn btn-outline-success" style="margin-right:10px;"><i class="fas fa-user-edit"></i>&nbsp;AssignRole</a>';
                     $edit_icon = '';
                     $role = '';
                 }
@@ -68,7 +76,7 @@ class UserController extends Controller
            
                 return '<div class="action-icon">' . $role .$assign. $edit_icon . $delete_icon . '</div>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['role','action'])
             ->make(true);
         }
         return view('users.index');
@@ -100,25 +108,19 @@ class UserController extends Controller
         $permissions = Permission::all();
         return view('users.edit',compact('user','roles','permissions'));
     }
-
-    public function showAssign($id)
+    public function update(Request $request,$id)
     {
         $user = User::findOrFail($id);
-        $roles = Role::all();
-        $permissions = Permission::all();
-        return view('users.assign',compact('user','roles','permissions'));
-    }
-    public function assign(Request $request)
-    {
-        $user = User::findOrFail($request->id);
-        $role = Role::findOrFail($request->id);
-
+        $role = Role::findOrFail($request->role);
+        
         $user->roles()->sync([$role->id => ['model_type' => 'App\\Models\\User']]);
 
-        $permissions = $request->permissions ?? [];
-        $role->syncPermissions($permissions);
-
-        return redirect('/users');
+        $user->update([
+            "name" => $request->name,
+            "email" => $request->email,
+    
+        ]);
+        return redirect('/users')->with('Users Updated Successfully');
     }
     public function delete($id)
     {

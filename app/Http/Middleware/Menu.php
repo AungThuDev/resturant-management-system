@@ -31,7 +31,7 @@ class Menu
                 {
                 array_push($per,$p->name);
                 }
-                if(!array_search('menu-management',$per)){
+                if(!in_array('menu-management',$per)){
                     return redirect()->back();
                 }
             }

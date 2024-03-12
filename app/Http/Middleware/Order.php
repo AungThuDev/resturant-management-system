@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class Reporting
+class Order
 {
     /**
      * Handle an incoming request.
@@ -19,25 +19,22 @@ class Reporting
         $user = auth()->user();
         $permission = [];
         $per = [];
-        if($user)
-        {
-            foreach($user->roles as $role)
-            {
-                foreach($role->permissions as $p)
+            if ($user) {
+                foreach($user->roles as $role)
                 {
-                    array_push($permission,$p);
+                    foreach($role->permissions as $p)
+                    {
+                        array_push($permission,$p);
+                    }
+                }
+                foreach($permission as $p)
+                {
+                array_push($per,$p->name);
+                }
+                if(!in_array('order-management',$per)){
+                    return redirect()->back();
                 }
             }
-            
-            foreach($permission as $p)
-            {
-                array_push($per,$p->name);
-            }
-            
-            if(!in_array('reporting',$per)){
-                return redirect()->back();
-            }
-        }
         return $next($request);
     }
 }
