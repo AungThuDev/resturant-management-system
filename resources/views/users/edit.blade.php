@@ -17,6 +17,10 @@
         <input type="text" name="name" class="form-control" value="{{$user->name}}">
     </div>
     <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" name="email" class="form-control" value="{{$user->email}}">
+    </div>
+    <div class="form-group">
         <label for="categories">Choose Role</label>
         <select name="role" id="role">
             @foreach($roles as $r)
@@ -33,23 +37,7 @@
         </select>
     </div>
     
-    <div class="form-group">
-        <label for=""><b>Choose Permissions</b></label><br><br>
-        @foreach($permissions as $p)
-        <input type="checkbox" name="permissions[]" value="{{$p->id}}" id="label{{$p->id}}"
-        @foreach($user->roles as $role)
-            @foreach($role->permissions as $permission)
-                @if($permission->name == $p->name)
-                    checked
-                @endif
-            @endforeach
-        @endforeach
-        >
-
-        <label for="label{{$p->id}}">{{$p->name}}</label><br>
-        @endforeach
-    </div>
-    <input type="submit" class="btn btn-success" value="Update Permission" style="background-color: #204c2d!important;">
+    <input type="submit" class="btn btn-success" value="Update Role" style="background-color: #204c2d!important;">
 </form>
 @endsection
 @section('script')

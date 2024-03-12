@@ -25,23 +25,25 @@ class Authorize
         $user = auth()->user();
         $permission = [];
         $per = [];
-
         if ($user) {
             foreach($user->roles as $role)
             {
                 foreach($role->permissions as $p)
                 {
+                    
                     array_push($permission,$p);
                 }
             }
+
+            
             foreach($permission as $p)
             {
             array_push($per,$p->name);
             }
             
             
-            if(!!array_search('user-management',$per)){
-                
+            
+            if(!in_array('user-management',$per)){
                 return redirect()->back();
             }
         }

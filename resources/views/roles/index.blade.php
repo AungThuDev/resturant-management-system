@@ -10,6 +10,7 @@
             <tr>
                 <th>No.</th>
                 <th>Role Name</th>
+                <th>Permission</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -29,6 +30,9 @@
                 },
                 {
                     "data": "name",
+                },
+                {
+                    "data" : "permission",
                 },
                 {
                     "data": "action",

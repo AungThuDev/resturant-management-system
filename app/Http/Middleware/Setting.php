@@ -16,6 +16,27 @@ class Setting
      */
     public function handle(Request $request, Closure $next)
     {
+        $user = auth()->user();
+        $permission = [];
+        $p = [];
+
+        if($user)
+        {
+            foreach($user->roles as $role)
+            {
+                foreach($role->permissions as $p)
+                {
+                    array_push($permission,$p);
+                }
+            }
+            foreach($permission as $p)
+            {
+                array_push($per,$p->name);
+            }
+            if(!in_array('setting',$per)){
+                return redirect()->back();
+            }
+        }
         return $next($request);
     }
 }
