@@ -3,6 +3,7 @@
 use App\Http\Controllers\DinningPlanController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SalesRecordsController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,14 +26,14 @@ Route::middleware('auth')->group(function(){
     Route::get('/dashboard',[App\Http\Controllers\DashboardController::class,'index'])->name('dashboard.index');
 
     
-    Route::resource('/tables', TableController::class)->middleware('order-management');
-    Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan')->middleware('order-management');
-    Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here')->middleware('order-management');
-    Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
-    Route::get('/order-list', [OrderController::class, 'list'])->name('order.list')->middleware('order-management');
-    Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail')->middleware('order-management');
+Route::resource('/tables', TableController::class)->middleware('order-management');
+Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan')->middleware('order-management');
+Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here')->middleware('order-management');
+Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
+Route::get('/order-list', [OrderController::class, 'list'])->name('order.list');
+Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail');
 Route::post('/orders/{order}/checkout', [OrderController::class, 'checkout'])->name('checkout');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('/kitchens',App\Http\Controllers\KitchenController::class)->middleware('menu-management');
 Route::resource('/categories',App\Http\Controllers\CategoryController::class)->middleware('menu-management');
@@ -57,10 +58,15 @@ Route::delete('/users/{id}',[App\Http\Controllers\UserController::class,'delete'
 Route::resource('/customers',App\Http\Controllers\CustomerDiscountController::class)->middleware('discount-management');
 Route::resource('/categoryDiscounts',App\Http\Controllers\CategoryDiscountController::class)->middleware('discount-management');
 
-
-Route::get('/sales-records', [SalesRecordsController::class, 'index'])->name('sales-records.index')->middleware('reporting');
-Route::get('/sales-records/{salerecord}/details', [SalesRecordsController::class, 'details'])->name('sales-records.show')->middleware('reporting');
-Route::get('/receipt/{receipt}', [SalesRecordsController::class, 'print'])->name('print.receipt')->name('reporting');
+Route::middleware('auth')->group(function(){
+    Route::get('/dashboard',function(){
+        return view('dashboard.index');
+    });
+    Route::get('/sales-records', [SalesRecordsController::class, 'index'])->name('sales-records.index')->middleware('reporting');
+    Route::get('/sales-records/{salerecord}/details', [SalesRecordsController::class, 'details'])->name('sales-records.show')->middleware('reporting');
+    Route::get('/receipt/{receipt}', [SalesRecordsController::class, 'print'])->name('print.receipt')->name('reporting');
+    Route::get('/settings', [SettingController::class, 'index']);
+    Route::post('/settings', [SettingController::class, 'save'])->name('setting.save');
 });
 
 

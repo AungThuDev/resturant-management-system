@@ -37,7 +37,8 @@
     <!-- Main content -->
     <div class="main-content" id="panel">
         <!-- Topnav -->
-        <nav class="navbar navbar-top navbar-expand navbar-dark border-bottom" style="background: #204c2d!important;">
+        <nav class="navbar navbar-top navbar-expand navbar-dark border-bottom"
+            style="background: {{ $setting->hex_code }}!important;">
             <div class="container-fluid">
                 <h1 style="color: #fff;font-size:20px;" class="mx-3">@yield('header')</h1>
 

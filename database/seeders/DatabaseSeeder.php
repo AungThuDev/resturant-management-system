@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             DiscountSeeder::class,
             CategorySeeder::class,
             KitchenSeeder::class,
-            RecordSeeder::class
+            RecordSeeder::class,
+            SettingSeeder::class
         ]);
     }
 }
