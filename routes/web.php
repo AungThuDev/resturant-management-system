@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SalesRecordsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,10 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
+
+Route::get('/test', [TestController::class, 'test']);
     
 Route::resource('/tables', TableController::class)->middleware('order-management');
-Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan')->middleware('order-management');
-Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here')->middleware('order-management');
+Route::get('/dinning-plans', [DinningPlanController::class, 'index'])->name('plan');
+Route::get('/order-here/{table}', [OrderController::class, 'index'])->name('order.here');
 Route::post('/{table}/ordered', [OrderController::class, 'order'])->name('ordered');
 Route::get('/order-list', [OrderController::class, 'list'])->name('order.list');
 Route::get('/orders/{order}/details', [OrderController::class, 'detail'])->name('order.detail');

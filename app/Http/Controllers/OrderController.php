@@ -7,14 +7,17 @@ use App\Models\Category;
 use App\Models\CustomerDiscount;
 use App\Models\DinningPlan;
 use App\Models\Discount;
+use App\Models\Kitchen;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Recipe;
 use App\Models\SaleRecord;
 use App\Models\Taste;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Rawilk\Printing\Facades\Printing;
 use Yajra\DataTables\DataTables;
 
 use function Ramsey\Uuid\v1;
@@ -169,6 +172,40 @@ class OrderController extends Controller
         $table->update([
             'status' => 'reserved'
         ]);
+
+        foreach($items as $item)
+        {
+           $kitchen_id = Recipe::where('id', $item->recipe_id)->value('kitchen_id');
+           foreach($item->recipes as $recipe)
+           {
+                $recipe_name = $recipe->name;
+           }
+           $data = [
+                'recipe_name' => $recipe_name,
+                'quantity' => $item->quantity,
+                'taste' => $item->taste
+            ];
+
+            $pdf = Pdf::loadView('receipt.print-order', $data);
+
+            $filename = 'receipt_' . time() . '.pdf';
+
+            $pdf->save(public_path('pdfs/' . $filename));
+
+            if($kitchen_id == 1)
+            {
+                $filePath = public_path('pdfs/' . $filename);
+                Printing::newPrintTask()
+                ->printer('ipp://localhost:631/printers/CUPS-BRF')
+                ->file($filePath)
+                ->send();
+            }
+
+
+            
+        }
+
+ 
 
         $cart_items->delete();
 

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^2.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
@@ -13,6 +14,10 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "3.*",
         "livewire/livewire": "^2.12",
+        "php-http/discovery": "^1.19",
+        "psr/http-factory": "^1.0",
+        "rawilk/laravel-printing": "^3.0",
+        "smalot/cups-ipp": "^0.5.0",
         "spatie/laravel-permission": "^6.4",
         "yajra/laravel-datatables": "^1.0"
     },
@@ -59,7 +64,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
