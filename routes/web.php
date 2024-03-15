@@ -58,10 +58,7 @@ Route::delete('/users/{id}',[App\Http\Controllers\UserController::class,'delete'
 Route::resource('/customers',App\Http\Controllers\CustomerDiscountController::class)->middleware('discount-management');
 Route::resource('/categoryDiscounts',App\Http\Controllers\CategoryDiscountController::class)->middleware('discount-management');
 
-Route::middleware('auth')->group(function(){
-    Route::get('/dashboard',function(){
-        return view('dashboard.index');
-    });
+
     Route::get('/sales-records', [SalesRecordsController::class, 'index'])->name('sales-records.index')->middleware('reporting');
     Route::get('/sales-records/{salerecord}/details', [SalesRecordsController::class, 'details'])->name('sales-records.show')->middleware('reporting');
     Route::get('/receipt/{receipt}', [SalesRecordsController::class, 'print'])->name('print.receipt')->name('reporting');
