@@ -56,53 +56,34 @@
     <h3>York Cafe</h3>
     <h3>Sincerely,</h3>
     <h3>Thanks You!</h3>
-    <img src="{{ asset('assets/img/brand/logo.webp') }}"
-        style="width: 150px; border-radius: 50%;justify-content: center;margin-left: 20px" alt="">
-
-    <h5>Order ID - {{ $receipt->order_id }}</h5>
+    <h5>Order ID - {{ $order_id }}</h5>
     <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Taste</th>
-                <th>Per</th>
+                <th>Price</th>
                 <th>Qty</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($order_details as $detail)
                 <tr>
-                    @foreach ($detail->recipes as $recipe)
-                        <td>{{ $recipe->name }}</td>
-                    @endforeach
-                    <td>{{ $detail->taste }}</td>
-                    <td>{{ $detail->amount }} MMK</td>
-                    <td>{{ $detail->quantity }}</td>
+                    <td>{{ $detail['name'] }}</td>
+                    <td>{{ $detail['taste'] }}</td>
+                    <td>{{ $detail['price'] }} MMK</td>
+                    <td>{{ $detail['qty'] }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
     <br><br>
-    <h2>Sub - {{ $receipt->amount }} MMK</h2>
-    <h2>Grand - {{ $receipt->discounted_amount }} MMK </h2>
+    <h2>Sub - {{ $total }} MMK</h2>
+    <h2>Grand - {{ $discounted_amount }} MMK </h2>
     <h3>including tax 10 %</h3>
 
     <h3>Please Come Again! We will offer you great service</h3>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            function afterPrint() {
-                window.location.href = "/dinning-plans";
-            }
-
-            // Attach event listeners
-            window.onafterprint = afterPrint;
-
-            // Trigger the print dialog
-            window.print();
-        });
-    </script>
 </body>
 
 </html>

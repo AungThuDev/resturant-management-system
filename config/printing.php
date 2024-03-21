@@ -27,8 +27,8 @@ return [
         ],
         'cups' => [
             'ip' => env('CUPS_SERVER_IP', 'localhost'),
-            'username' => env('CUPS_SERVER_USERNAME', 'hein'),
-            'password' => env('CUPS_SERVER_PASSWORD', 'bigtech123'),
+            'username' => env('CUPS_SERVER_USERNAME', 'epsilon'),
+            'password' => env('CUPS_SERVER_PASSWORD', 'leepassword'),
             'port' => env('CUPS_SERVER_PORT', 631),
         ],
 

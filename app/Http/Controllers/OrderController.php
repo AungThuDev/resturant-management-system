@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\DB;
 use Rawilk\Printing\Facades\Printing;
 use Yajra\DataTables\DataTables;
 
-use function Ramsey\Uuid\v1;
-
 class OrderController extends Controller
 {
     public function index(DinningPlan $table)
@@ -140,6 +138,7 @@ class OrderController extends Controller
             
         }
 
+
         foreach($items as $item)
         {
 
@@ -172,7 +171,7 @@ class OrderController extends Controller
         $table->update([
             'status' => 'reserved'
         ]);
-
+        
         foreach($items as $item)
         {
            $kitchen_id = Recipe::where('id', $item->recipe_id)->value('kitchen_id');
@@ -186,27 +185,61 @@ class OrderController extends Controller
                 'taste' => $item->taste
             ];
 
-            $pdf = Pdf::loadView('receipt.print-order', $data);
+            if($kitchen_id == 1)
+            {
+                $kitchen_one[] = $data;
+            }
+            else
+            {
+                $kitchen_two[] = $data;
+            }
+        }
+
+        if(!empty($kitchen_one))
+        {
+            
+            $pdf = Pdf::loadView('receipt.print-order', ['kitchen' => $kitchen_one]);
 
             $filename = 'receipt_' . time() . '.pdf';
 
             $pdf->save(public_path('pdfs/' . $filename));
 
-            if($kitchen_id == 1)
+            // return $pdf->download('test1.pdf');
+
+            $filePath = public_path('pdfs/' . $filename);
+            Printing::newPrintTask()
+            ->printer('ipp://localhost:631/printers/CUPS-BRF')
+            ->file($filePath)
+            ->send();
+
+            if(file_exists($filePath))
             {
-                $filePath = public_path('pdfs/' . $filename);
-                Printing::newPrintTask()
-                ->printer('ipp://localhost:631/printers/CUPS-BRF')
-                ->file($filePath)
-                ->send();
+                unlink($filePath);
             }
-
-
             
         }
+        
+        if(!empty($kitchen_two))
+        {
+            $pdf = Pdf::loadView('receipt.print-order', ['kitchen' => $kitchen_two]);
 
- 
+            $filename = 'receipt_' . time() . '.pdf';
 
+            $pdf->save(public_path('pdfs/' . $filename));
+
+
+            $filePath = public_path('pdfs/' . $filename);
+            Printing::newPrintTask()
+            ->printer('ipp://localhost:631/printers/Test')
+            ->file($filePath)
+            ->send();
+
+            if(file_exists($filePath))
+            {
+                unlink($filePath);
+            }
+            // return $pdf->download('test2.pdf');     
+        }
         $cart_items->delete();
 
         return redirect('/order-list');
@@ -289,7 +322,6 @@ class OrderController extends Controller
             {
                 $discount_amount = $total;
             }
-    
             $record = SaleRecord::create([
                 'order_id' => $order->id,
                 'amount' => $total,
@@ -306,8 +338,44 @@ class OrderController extends Controller
             $table->update([
                 'status' => 'available'
             ]);
+
+            $details = $order->order_details()->with('recipes')->get();
+
+            foreach($details as $detail)
+            {
+                foreach($detail->recipes as $recipe)
+                {
+                    $recipe_name = $recipe->name;
+                }
+                $data = [
+                    'name' => $recipe_name,
+                    'taste' => $detail->taste,
+                    'price' => $detail->amount,
+                    'qty' => $detail->quantity
+                ];
+
+                $order_details[] = $data;
+            }
     
-            return redirect()->route('print.receipt', $record->id);
+            $pdf = Pdf::loadView('receipt.print', ['order_details' => $order_details, 'order_id' => $record->order_id, 'total' => $record->amount, 'discounted_amount' => $record->discounted_amount]);
+
+            $filename = 'receipt_' . time() . '.pdf';
+
+            $pdf->save(public_path('pdfs/' . $filename));
+            // return $pdf->download('final.pdf');
+
+            $filePath = public_path('pdfs/' . $filename);
+            Printing::newPrintTask()
+            ->printer('ipp://localhost:631/printers/Final_Printer')
+            ->file($filePath)
+            ->send();
+
+            if(file_exists($filePath))
+            {
+                unlink($filePath);
+            }
+
+            return redirect('/order-list');
         }
         else
         {
